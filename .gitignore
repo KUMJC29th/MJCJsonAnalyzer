@@ -1,0 +1,15 @@
+*
+!*/
+!/Analyzing/*
+!/GoogleAppsScript/*
+!/IO/*
+!/MJCJson/*
+!/MjlogToMJCJson/*
+!/MJsonToMJCJson/*
+!/Repository/honors_table.json
+!/Repository/numbers_table.json
+!/Shanten/*
+!/tests/*
+!/Util/*
+!/.gitignore
+!/main.ts
