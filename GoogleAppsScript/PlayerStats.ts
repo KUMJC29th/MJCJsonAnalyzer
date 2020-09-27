@@ -15,7 +15,7 @@ type ParentColumn = {
     readonly children: readonly SingleColumn[]
 };
 
-export type PlayerStatsForGas = {
+export type PlayerStats = {
     readonly columns: readonly (ParentColumn | SingleColumn)[],
     readonly stats: readonly {
         readonly name: string,

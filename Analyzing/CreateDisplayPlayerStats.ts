@@ -3,35 +3,11 @@
  * This Source Code Form is “Incompatible With Secondary Licenses”, as defined by the Mozilla Public License, v. 2.0. */
 
 import "https://github.com/matcher-ice/ts_utils_and_extensions/raw/master/ArrayExtensions.ts";
-import { getAllPlayers } from "../MJCJson/PlayerDictionary.ts"
-import type { Match } from "../MJCJson/Match.ts";
-import type { MatchResultsForGas } from "../GoogleAppsScript/MatchResultsForGas.ts";
 import type { PlayerStat, RiichiWinLossStat, WinLossStat } from "../MJCJson/PlayerStat.ts";
-import type { PlayerStatsForGas } from "../GoogleAppsScript/PlayerStatsForGas.ts"
+import type { PlayerStats } from "../GoogleAppsScript/PlayerStats.ts"
 import { ParentPlayerStatsColumn, PlayerStatsColumn, SinglePlayerStatsColumn } from "../GoogleAppsScript/PlayerStatsColumn.ts";
 import { honorYakuList, yakuList } from "../MJCJson/Yaku.ts";
 import type { NumericValueType } from "../GoogleAppsScript/NumericValueType.ts";
-
-export function createMatchResultsForGas(matches: readonly Match[]): MatchResultsForGas
-{
-    const players = getAllPlayers();
-    return {
-        players,
-        results: matches.map(match =>
-            ({
-                d: Math.floor(match.id / 100),
-                g: match.id % 100,
-                i: match.players.reduce((acc, player) =>
-                    {
-                        acc[players.indexOf(player.name)] = player.income;
-                        return acc;
-                    },
-                    [...new Array(players.length)].fill(null) as (number | null)[]
-                )
-            })
-        )
-    };
-}
 
 function createWinLossStatsChildrenColumns(fieldPrefix: string, winLossStatsSelector: (stat: PlayerStat) => WinLossStat): readonly SinglePlayerStatsColumn[]
 {
@@ -189,7 +165,7 @@ function formatValue(value: number, valueType: NumericValueType): number
     }
 }
 
-export function createPlayerStats(playerStats: readonly { readonly name: string, readonly stat: PlayerStat }[]): PlayerStatsForGas
+export function createDisplayPlayerStats(playerStats: readonly { readonly name: string, readonly stat: PlayerStat }[]): PlayerStats
 {
     const originalColumns = createPlayerStatsColumns();
 
@@ -224,7 +200,7 @@ export function createPlayerStats(playerStats: readonly { readonly name: string,
         })
     );
 
-    const ret: PlayerStatsForGas = {
+    const ret: PlayerStats = {
         columns,
         stats
     };

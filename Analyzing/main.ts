@@ -10,9 +10,10 @@ import { FileAggregater } from "../IO/FileAggregater.ts";
 import type { MatchStat } from "../MJCJson/MatchStat.ts";
 import { createMjcPlayerStats } from "./CreatePlayerStats.ts";
 import type { PlayerStat } from "../MJCJson/PlayerStat.ts";
-import { createMatchResultsForGas } from "./CreateForGas.ts";
+import { createMatchResults } from "./CreateDisplayMatchResults.ts";
 import { autoBackup } from "../IO/AutoBackup.ts";
-import { createPlayerStats } from "./CreateForGas.ts";
+import { createDisplayPlayerStats } from "./CreateDisplayPlayerStats.ts";
+import { createCompetition } from "./CreateCompetition.ts";
 
 export async function writeAllMatchStat(isForcingAll?: boolean): Promise<void>
 {
@@ -47,40 +48,52 @@ export async function writePlayerStat(): Promise<void>
             const matchStat: MatchStat = JSON.parse(inputContent);
             return matchStat;
         },
-        matchStats => JSON.stringify([...createMjcPlayerStats(matchStats).entries()].map(([name, stat]) => ({ name, stat }))),
-        path.join(Deno.cwd(), "Repository", "output", "player_stats", "player_stats.json")
+        [
+            {
+                dstFilePath: path.join(Deno.cwd(), "Repository", "output", "player_stats", "player_stats.json"),
+                convert: matchStats => JSON.stringify([...createMjcPlayerStats(matchStats).entries()].map(([name, stat]) => ({ name, stat })))
+            }
+        ]
     );
     await aggregater.aggregateAll();
 }
 
-export async function writeMatchResultsForGas(): Promise<void>
+export async function writeDisplayItemsAboutMatches(): Promise<void>
 {
     const aggregater = new FileAggregater(
-        writeMatchResultsForGas.name,
+        writeDisplayItemsAboutMatches.name,
         path.join(Deno.cwd(), "Repository", "output", "mjc_json"),
         inputContent => {
             const match: Match = JSON.parse(inputContent);
             return match;
         },
-        matches => JSON.stringify(createMatchResultsForGas(matches)),
-        path.join(Deno.cwd(), "Repository", "output", "gas", "match_results_for_gas.json")
+        [
+            {
+                dstFilePath: path.join(Deno.cwd(), "Repository", "output", "gas", "match_results.json"),
+                convert: matches => JSON.stringify(createMatchResults(matches))
+            },
+            {
+                dstFilePath: path.join(Deno.cwd(), "Repository", "output", "gas", "competition.json"),
+                convert: matches => JSON.stringify(createCompetition(matches))
+            }
+        ]
     )
     {
     }
     await aggregater.aggregateAll();
 }
 
-export async function writePlayerStatsForGas(): Promise<void>
+export async function writeDisplayPlayerStats(): Promise<void>
 {
-    console.log("Writing player stats for Google Apps Script.");
+    console.log("Writing player stats for display.");
 
     const srcFilePath = path.join(Deno.cwd(), "Repository", "output", "player_stats", "player_stats.json");
     const inputContent = await Deno.readTextFile(srcFilePath);
     const playerStats: readonly { readonly name: string, readonly stat: PlayerStat }[] = JSON.parse(inputContent);
-    const dstFilePath = path.join(Deno.cwd(), "Repository", "output", "gas", "player_stats_for_gas.json");
-    const outputContent = JSON.stringify(createPlayerStats(playerStats));
+    const dstFilePath = path.join(Deno.cwd(), "Repository", "output", "gas", "player_stats.json");
+    const outputContent = JSON.stringify(createDisplayPlayerStats(playerStats));
     await autoBackup(dstFilePath);
     await Deno.writeTextFile(dstFilePath, outputContent);
 
-    console.log("Wrote player stats for Google Apps Script.");
+    console.log("Wrote player stats for display.");
 }

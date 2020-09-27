@@ -4,7 +4,7 @@
 
 import { allMJLogToMjcJson } from "./MjlogToMJCJson/main.ts";
 import { allMjsonToMjcJson } from "./MJsonToMJCJson/main.ts";
-import { writeAllMatchStat, writeMatchResultsForGas, writePlayerStat, writePlayerStatsForGas } from "./Analyzing/main.ts";
+import { writeAllMatchStat, writeDisplayItemsAboutMatches, writePlayerStat, writeDisplayPlayerStats } from "./Analyzing/main.ts";
 //import "https://github.com/matcher-ice/ts_utils_and_extensions/raw/master/ArrayExtensions.ts";
 //import { ListMap } from "https://github.com/matcher-ice/ts_utils_and_extensions/raw/master/ListMap.ts";
 //import { take, firstOrDefault } from "https://github.com/matcher-ice/ts_utils_and_extensions/raw/master/IteratorExtensions.ts";
@@ -40,7 +40,7 @@ async function main(): Promise<void>
                 await writePlayerStat();
                 break;
             case "-gas":
-                await Promise.all([writeMatchResultsForGas(), writePlayerStatsForGas()]);
+                await Promise.all([writeDisplayItemsAboutMatches(), writeDisplayPlayerStats()]);
                 break;
             default:
                 break;

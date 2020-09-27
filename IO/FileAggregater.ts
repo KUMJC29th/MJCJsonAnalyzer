@@ -11,8 +11,7 @@ export class FileAggregater<T>
         private readonly name: string,
         private readonly srcDir: string,
         private readonly readConvert: (inputContent: string) => T,
-        private readonly writeConvert: (items: readonly T[]) => string,
-        private readonly dstFilePath: string
+        private readonly writeConverters: readonly { dstFilePath: string, convert: (items: readonly T[]) => string }[]
     )
     {
     }
@@ -28,10 +27,14 @@ export class FileAggregater<T>
             const inputContent = await Deno.readTextFile(srcPath);
             items.push(this.readConvert(inputContent));
         }
-        const outputContent = this.writeConvert(items);
 
-        await autoBackup(this.dstFilePath);
-        await Deno.writeTextFile(this.dstFilePath, outputContent);
+        for (const { dstFilePath, convert } of this.writeConverters)
+        {
+            const outputContent = convert(items);
+            await autoBackup(dstFilePath);
+            await Deno.writeTextFile(dstFilePath, outputContent);
+            console.log(`Output ${dstFilePath}`);
+        }
 
         console.log(`FileAggregater: ${this.name} ends aggregating.`);
     }
