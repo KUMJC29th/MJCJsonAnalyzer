@@ -4,10 +4,10 @@
 
 import "https://github.com/matcher-ice/ts_utils_and_extensions/raw/master/ArrayExtensions.ts";
 import type { PlayerStat, RiichiWinLossStat, WinLossStat } from "../MJCJson/PlayerStat.ts";
-import type { PlayerStats } from "../GoogleAppsScript/PlayerStats.ts"
-import { ParentPlayerStatsColumn, PlayerStatsColumn, SinglePlayerStatsColumn } from "../GoogleAppsScript/PlayerStatsColumn.ts";
+import type { PlayerStats } from "../DB/PlayerStats.ts"
+import { ParentPlayerStatsColumn, PlayerStatsColumn, SinglePlayerStatsColumn } from "../DB/PlayerStatsColumn.ts";
 import { honorYakuList, yakuList } from "../MJCJson/Yaku.ts";
-import type { NumericValueType } from "../GoogleAppsScript/NumericValueType.ts";
+import type { NumericValueType } from "../DB/NumericValueType.ts";
 
 function createWinLossStatsChildrenColumns(fieldPrefix: string, winLossStatsSelector: (stat: PlayerStat) => WinLossStat): readonly SinglePlayerStatsColumn[]
 {
@@ -165,7 +165,7 @@ function formatValue(value: number, valueType: NumericValueType): number
     }
 }
 
-export function createDisplayPlayerStats(playerStats: readonly { readonly name: string, readonly stat: PlayerStat }[]): PlayerStats
+export function createDbPlayerStats(playerStats: readonly { readonly name: string, readonly stat: PlayerStat }[]): PlayerStats
 {
     const originalColumns = createPlayerStatsColumns();
 

@@ -1,4 +1,4 @@
-import { playerStatsColumnsDuplicatedFieldNameTest } from "../Analyzing/CreateForGas.ts";
+import { playerStatsColumnsDuplicatedFieldNameTest } from "../Analyzing/CreateDbPlayerStats.ts";
 
 Deno.test("PlayerStatsColumnsDuplicatedFieldName", () =>
 {

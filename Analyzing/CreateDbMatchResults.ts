@@ -4,9 +4,9 @@
 
 import { getAllPlayers } from "../MJCJson/PlayerDictionary.ts"
 import type { Match } from "../MJCJson/Match.ts";
-import type { MatchResults } from "../GoogleAppsScript/MatchResults.ts";
+import type { MatchResults } from "../DB/MatchResults.ts";
 
-export function createMatchResults(matches: readonly Match[]): MatchResults
+export function createDbMatchResults(matches: readonly Match[]): MatchResults
 {
     const players = getAllPlayers();
     return {

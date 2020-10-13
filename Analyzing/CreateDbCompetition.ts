@@ -4,13 +4,13 @@
 
 import { getAllPlayers } from "../MJCJson/PlayerDictionary.ts"
 import type { Match } from "../MJCJson/Match.ts";
-import type { Competition, CompetitionResult } from "../GoogleAppsScript/Competition.ts";
+import type { Competition, CompetitionResult } from "../DB/Competition.ts";
 
 type Mutable<T> = {
     -readonly [P in keyof T]: T[P];
 };
 
-export function createCompetition(matches: readonly Match[]): Competition
+export function createDbCompetition(matches: readonly Match[]): Competition
 {
     const players = getAllPlayers();
     const items: readonly (readonly Mutable<CompetitionResult>[])[] = [...new Array(players.length)].map(() => [...new Array(players.length)].map(() => ({ income: 0, win: 0, loss: 0 })));

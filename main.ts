@@ -4,7 +4,7 @@
 
 import { allMJLogToMjcJson } from "./MjlogToMJCJson/main.ts";
 import { allMjsonToMjcJson } from "./MJsonToMJCJson/main.ts";
-import { writeAllMatchStat, writeDisplayItemsAboutMatches, writePlayerStat, writeDisplayPlayerStats } from "./Analyzing/main.ts";
+import { writeAllMatchStat, writePlayerStat, writeDb } from "./IO/main.ts";
 //import "https://github.com/matcher-ice/ts_utils_and_extensions/raw/master/ArrayExtensions.ts";
 //import { ListMap } from "https://github.com/matcher-ice/ts_utils_and_extensions/raw/master/ListMap.ts";
 //import { take, firstOrDefault } from "https://github.com/matcher-ice/ts_utils_and_extensions/raw/master/IteratorExtensions.ts";
@@ -18,29 +18,29 @@ async function main(): Promise<void>
     {
         switch (arg)
         {
-            case "-mjlog":
+            case "mjlog":
                 await allMJLogToMjcJson();
                 break;
-            case "-mjlog:f":
+            case "mjlog:f":
                 await allMJLogToMjcJson(true);
                 break;
-            case "-mjson":
+            case "mjson":
                 await allMjsonToMjcJson();
                 break;
-            case "-mjson:f":
+            case "mjson:f":
                 await allMjsonToMjcJson(true);
                 break;
-            case "-matchStat":
+            case "matchStat":
                 await writeAllMatchStat();
                 break;
-            case "-matchStat:f":
+            case "matchStat:f":
                 await writeAllMatchStat(true);
                 break;
-            case "-playerStat":
+            case "playerStat":
                 await writePlayerStat();
                 break;
-            case "-gas":
-                await Promise.all([writeDisplayItemsAboutMatches(), writeDisplayPlayerStats()]);
+            case "db":
+                await writeDb();
                 break;
             default:
                 break;
