@@ -4,13 +4,7 @@
 
 import { allMJLogToMjcJson } from "./MjlogToMJCJson/main.ts";
 import { allMjsonToMjcJson } from "./MJsonToMJCJson/main.ts";
-import { writeAllMatchStat, writePlayerStat, writeDb } from "./IO/main.ts";
-//import "https://github.com/matcher-ice/ts_utils_and_extensions/raw/master/ArrayExtensions.ts";
-//import { ListMap } from "https://github.com/matcher-ice/ts_utils_and_extensions/raw/master/ListMap.ts";
-//import { take, firstOrDefault } from "https://github.com/matcher-ice/ts_utils_and_extensions/raw/master/IteratorExtensions.ts";
-//import { DeepMutable } from "https://github.com/matcher-ice/ts_utils_and_extensions/raw/master/DeepMutable.ts";
-//import { Multiplet } from "https://github.com/matcher-ice/ts_utils_and_extensions/raw/master/Multiplet.ts";
-//import * as MathEx from "https://github.com/matcher-ice/ts_utils_and_extensions/raw/master/MathExtensions.ts";
+import { writeAllMatchStats, writeAllPlayerStats, writeDb } from "./IO/main.ts";
 
 async function main(): Promise<void>
 {
@@ -31,18 +25,22 @@ async function main(): Promise<void>
                 await allMjsonToMjcJson(true);
                 break;
             case "matchStat":
-                await writeAllMatchStat();
+                await writeAllMatchStats();
                 break;
             case "matchStat:f":
-                await writeAllMatchStat(true);
+                await writeAllMatchStats(true);
                 break;
             case "playerStat":
-                await writePlayerStat();
+                await writeAllPlayerStats();
+                break;
+            case "playerStat:f":
+                await writeAllPlayerStats(true);
                 break;
             case "db":
                 await writeDb();
                 break;
             default:
+                console.log(`WARNING: Invalid sub command '${arg}'`);
                 break;
         }
     }

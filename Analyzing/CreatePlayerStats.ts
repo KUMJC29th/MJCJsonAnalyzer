@@ -99,7 +99,7 @@ function updateWinLossStat(target: DeepMutable<WinLossStat>, gameStat: GameStat)
     }
 }
 
-export function createMjcPlayerStats(matchStats: readonly MatchStat[]): Map<string, PlayerStat>
+export function createMjcPlayerStats(matchStats: readonly MatchStat[]): ReadonlyMap<string, PlayerStat>
 {
     const allPlayers = getAllPlayers();
     const map = new Map<string, DeepMutable<PlayerStat>>(allPlayers.map(player => [player, createDefaultPlayerStat()]));
@@ -160,5 +160,8 @@ export function createMjcPlayerStats(matchStats: readonly MatchStat[]): Map<stri
         }
     }
 
-    return map;
+    // 半荘数0のプレイヤーを除外
+    const ret = new Map<string, PlayerStat>([...map.entries()].filter(([_, stat]) => stat.matchesCount > 0));
+
+    return ret;
 }

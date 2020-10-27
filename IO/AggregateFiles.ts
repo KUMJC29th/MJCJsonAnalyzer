@@ -3,12 +3,11 @@
  * This Source Code Form is “Incompatible With Secondary Licenses”, as defined by the Mozilla Public License, v. 2.0. */
 
 import * as path from "https://deno.land/std/path/mod.ts";
-import { autoBackup } from "./AutoBackup.ts";
 
 export async function aggregateFiles<T>(srcDir: string, convert: (content: string) => T): Promise<T[]>
 {
     const items: T[] = [];
-    for await (const { name: filename } of Deno.readDirSync(srcDir))
+    for await (const { name: filename } of Deno.readDir(srcDir))
     {
         const srcPath = path.join(srcDir, filename);
         const inputContent = await Deno.readTextFile(srcPath);
