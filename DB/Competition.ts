@@ -6,9 +6,6 @@ export type CompetitionResult = {
     readonly income: number,
     readonly win: number,
     readonly loss: number
-}
+};
 
-export type Competition = {
-    readonly players: readonly string[],
-    readonly items: readonly (readonly (CompetitionResult | null)[])[]
-}
+export type Competition = readonly (readonly (CompetitionResult | null)[])[];

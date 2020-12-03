@@ -8,7 +8,7 @@ import type { GameResult, GameResultWin, GameResultDraw } from "../MJCJson/GameR
 import type { EventItem, EventDraw, EventDiscard, EventMeld, EventChow, EventPung, EventConcealedKong, EventOpenKong, EventAdditionalKong } from "../MJCJson/EventItem.ts";
 import type { DrawKind } from "../MJCJson/DrawKind.ts";
 import type { Match } from "../MJCJson/Match.ts";
-import type { Player } from "../MJCJson/Player.ts";
+import type { PlayerGameResult } from "../MJCJson/PlayerGameResult.ts";
 import { ParsedNodeItem, EndScore, ParsedNodeItemPlayersName, ParsedNodeItemGame, ParsedNodeItemEndScores } from "./ParsedNodeItem.ts";
 import { getPlayerNameByNickname } from "../MJCJson/PlayerDictionary.ts";
 import { createParsedNodeItemRepository } from "./ParsedNodeItemRepository.ts";
@@ -288,7 +288,7 @@ export function parseMatch(id: number, fileContent: string): Match
     const sortedTmpScores = [...tmpScores].sort((x, y) => y - x);
     const players = [0, 1, 2, 3].map(i => 
         {
-            const ret: Player = {
+            const ret: PlayerGameResult = {
                 name: repository.playersName[i],
                 score: repository.endScores[i].score,
                 income: repository.endScores[i].income,

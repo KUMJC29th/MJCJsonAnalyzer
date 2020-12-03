@@ -46,8 +46,5 @@ export function createDbCompetition(matches: readonly Match[]): Competition
         }
     }
 
-    return {
-        players,
-        items: items.map(row => row.map(cell => cell.win + cell.loss === 0 ? null : cell))
-    };
+    return items.map(row => row.map(cell => cell.win + cell.loss === 0 ? null : cell));
 }

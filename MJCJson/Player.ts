@@ -4,7 +4,6 @@
 
 export type Player = {
     readonly name: string;
-    readonly score: number;
-    readonly income: number;
-    readonly rank: number;  // zero-based
+    readonly nicknames: readonly string[];
+    readonly color: string;
 }

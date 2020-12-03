@@ -3,19 +3,22 @@
  * This Source Code Form is “Incompatible With Secondary Licenses”, as defined by the Mozilla Public License, v. 2.0. */
 
 import * as path from "https://deno.land/std/path/mod.ts";
+import type { Player } from "./Player.ts";
 
 class PlayerDictionary
 {
     private map: Map<string, string>;
+    private colorMap: Map<string, string>;
     private players: string[];
 
     constructor()
     {
         const filePath = path.join(Deno.cwd(), "Repository", "players.json");
         const content = Deno.readTextFileSync(filePath);
-        const items: { nickname: string, name: string }[] = JSON.parse(content);
-        this.map = new Map<string, string>(items.map(item => [item.nickname, item.name]));
-        this.players = [...new Set<string>(items.map(item => item.name))];
+        const items: Player[] = JSON.parse(content);
+        this.map = new Map(items.flatMap(item => item.nicknames.map(nickname => [nickname, item.name])));
+        this.colorMap = new Map(items.map(item => [item.name, item.color]));
+        this.players = items.map(item => item.name);
     }
 
     getPlayerNameByNickname(nickname: string): string
@@ -28,6 +31,11 @@ class PlayerDictionary
     getAllPlayers(): readonly string[]
     {
         return [...this.players];
+    }
+
+    getAllPlayerColors(): readonly { name: string, color: string }[]
+    {
+        return [...this.colorMap.entries()].map(([name, color]) => ({ name, color }));
     }
 }
 
@@ -42,3 +50,8 @@ export function getAllPlayers(): readonly string[]
 {
     return instance.getAllPlayers();
 }
+
+export function getAllPlayerColors(): readonly { name: string, color: string }[]
+{
+    return instance.getAllPlayerColors();
+} 

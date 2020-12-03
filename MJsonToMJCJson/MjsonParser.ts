@@ -10,7 +10,7 @@ import type { DrawKind } from "../MJCJson/DrawKind.ts";
 import { yakuList } from "../MJCJson/Yaku.ts";
 import type { YakuDoubles } from "../MJCJson/YakuDoubles.ts";
 import type { Match } from "../MJCJson/Match.ts";
-import type { Player } from "../MJCJson/Player.ts";
+import type { PlayerGameResult } from "../MJCJson/PlayerGameResult.ts";
 import type { MJsonGameResult } from "./MJsonGameResult.ts";
 import type { MJsonDrawKind } from "./MJsonDrawKind.ts";
 import { getPlayerNameByNickname } from "../MJCJson/PlayerDictionary.ts";
@@ -448,7 +448,7 @@ export function convertToMjcJson(id: number, mjson: MJson): Match
 {
     const tmpScores = [0, 1, 2, 3].map(i => mjson.sc[2 * i] - 0.1 * i);
     const sortedTmpScores = [...tmpScores].sort((x, y) => y - x);
-    const players = [0, 1, 2, 3].map((i): Player => 
+    const players = [0, 1, 2, 3].map((i): PlayerGameResult => 
         ({
             name: getPlayerNameByNickname(mjson.name[i]),
             score: mjson.sc[2 * i],

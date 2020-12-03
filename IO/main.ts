@@ -16,6 +16,7 @@ import { createDbCompetition } from "../Analyzing/CreateDbCompetition.ts";
 import type { ShortenedPlayerStat } from "../DB/ShortenedPlayerStat.ts";
 import { shortenPlayerStat } from "../DB/ShortenPlayerStat.ts";
 import { enumerable, IGrouping } from "https://github.com/matcher-ice/linq-ts/raw/master/src/mod.ts";
+import { getAllPlayerColors } from "../MJCJson/PlayerDictionary.ts";
 
 
 export async function writeAllMatchStats(isForcingAll?: boolean): Promise<void>
@@ -123,6 +124,8 @@ async function createDbPlayerStats(): Promise<Readonly<DbPlayerStats>>
 
 export async function writeDb(): Promise<void>
 {
+    const players = getAllPlayerColors();
+
     const matches = await aggregateFiles(
         path.join(Deno.cwd(), "Repository", "output", "mjc_json"),
         inputContent => {
@@ -136,12 +139,13 @@ export async function writeDb(): Promise<void>
     const playerStats = await createDbPlayerStats();
 
     const db = {
+        players,
         playerStats,
         matchResults,
         competition,
     };
 
-    const dstFilePath = path.join(Deno.cwd(), "Repository", "output", "db", "mjc_db_tenho_v2.json");
+    const dstFilePath = path.join(Deno.cwd(), "Repository", "output", "db", "mjc_db_tenho_v3.json");
     await autoBackup(dstFilePath);
     await Deno.writeTextFile(dstFilePath, JSON.stringify(db));
     console.log(`Output: ${dstFilePath}`);

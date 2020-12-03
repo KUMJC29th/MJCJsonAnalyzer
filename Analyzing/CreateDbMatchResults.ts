@@ -4,25 +4,22 @@
 
 import { getAllPlayers } from "../MJCJson/PlayerDictionary.ts"
 import type { Match } from "../MJCJson/Match.ts";
-import type { MatchResults } from "../DB/MatchResults.ts";
+import type { MatchResult } from "../DB/MatchResult.ts";
 
-export function createDbMatchResults(matches: readonly Match[]): MatchResults
+export function createDbMatchResults(matches: readonly Match[]): readonly MatchResult[]
 {
     const players = getAllPlayers();
-    return {
-        players,
-        results: matches.map(match =>
-            ({
-                d: Math.floor(match.id / 100),
-                g: match.id % 100,
-                i: match.players.reduce((acc, player) =>
-                    {
-                        acc[players.indexOf(player.name)] = player.income;
-                        return acc;
-                    },
-                    [...new Array(players.length)].fill(null) as (number | null)[]
-                )
-            })
-        )
-    };
+    return matches.map(match =>
+        ({
+            d: Math.floor(match.id / 100),
+            g: match.id % 100,
+            i: match.players.reduce((acc, player) =>
+                {
+                    acc[players.indexOf(player.name)] = player.income;
+                    return acc;
+                },
+                [...new Array(players.length)].fill(null) as (number | null)[]
+            )
+        })
+    );
 }
