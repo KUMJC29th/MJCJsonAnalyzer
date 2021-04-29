@@ -126,9 +126,9 @@ export function createMjcPlayerStats(matchStats: readonly MatchStat[]): Readonly
 
                 if (gameStat.winStat != null)
                 {
-                    for (const { yakuId } of gameStat.winStat.yakuList)
+                    for (const { yakuId, doubles } of gameStat.winStat.yakuList)
                     {
-                        ++target.yakuCount[yakuId];
+                        target.yakuCount[yakuId] += (yakuId < 52) ? 1 : doubles;
                     }
                 }
 
