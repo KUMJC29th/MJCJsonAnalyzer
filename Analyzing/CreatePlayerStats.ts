@@ -22,7 +22,8 @@ function createDefaultWinLossStat(): WinLossStat
         sumFeedingScore: 0,
         lossBySelfDrawCount: 0,
         sumLossScoreBySelfDraw: 0,
-        sumWinRound: 0
+        sumWinRound: 0,
+        sumAllDoraCount: 0
     };
 }
 
@@ -34,7 +35,8 @@ function createDefaultRiichiWinLossStat(): RiichiWinLossStat
         preemptiveCount: 0,
         badFormWaitingCount: 0,
         furitenCount: 0,
-        trickCount: 0
+        trickCount: 0,
+        sumHiddenDoraCount: 0
     };
 }
 
@@ -80,6 +82,9 @@ function updateWinLossStat(target: DeepMutable<WinLossStat>, gameStat: GameStat)
             ++target.selfDrawCount;
         }
         target.sumWinRound += gameStat.winStat.winRound;
+        target.sumAllDoraCount += gameStat.winStat.yakuList.find(item => item.yakuId === 52)?.doubles ?? 0;
+        target.sumAllDoraCount += gameStat.winStat.yakuList.find(item => item.yakuId === 53)?.doubles ?? 0;
+        target.sumAllDoraCount += gameStat.winStat.yakuList.find(item => item.yakuId === 54)?.doubles ?? 0;
     }
     if (gameStat.lossStats != null)
     {
@@ -144,6 +149,10 @@ export function createMjcPlayerStats(matchStats: readonly MatchStat[]): Readonly
                             break;
                         default:
                             break;
+                    }
+                    if (gameStat.winStat != null)
+                    {
+                        target.winLossStats.riichi.sumHiddenDoraCount += gameStat.winStat.yakuList.find(item => item.yakuId === 53)?.doubles ?? 0;
                     }
                 }
                 if (gameStat.melds)

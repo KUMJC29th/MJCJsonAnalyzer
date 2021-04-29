@@ -16,7 +16,8 @@ function shortenWinLossStat(winLossStats: WinLossStat): ShortenedWinLossStat
         fs: winLossStats.sumFeedingScore,
         lc: winLossStats.lossBySelfDrawCount,
         ls: winLossStats.sumLossScoreBySelfDraw,
-        wr: winLossStats.sumWinRound
+        wr: winLossStats.sumWinRound,
+        sd: winLossStats.sumAllDoraCount
     };
 }
 
@@ -28,7 +29,8 @@ function shortenRiichiWinLossStat(riichiWinLossStat: RiichiWinLossStat): Shorten
         rp: riichiWinLossStat.preemptiveCount,
         rb: riichiWinLossStat.badFormWaitingCount,
         rf: riichiWinLossStat.furitenCount,
-        rt: riichiWinLossStat.trickCount
+        rt: riichiWinLossStat.trickCount,
+        sdh: riichiWinLossStat.sumHiddenDoraCount
     };
 }
 

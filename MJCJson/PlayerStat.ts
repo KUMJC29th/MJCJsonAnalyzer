@@ -33,6 +33,7 @@ export type WinLossStat = {
     readonly lossBySelfDrawCount: number;
     readonly sumLossScoreBySelfDraw: number;
     readonly sumWinRound: number;
+    readonly sumAllDoraCount: number;
 }
 
 export type RiichiWinLossStat = WinLossStat & {
@@ -41,6 +42,7 @@ export type RiichiWinLossStat = WinLossStat & {
     readonly badFormWaitingCount: number;
     readonly furitenCount: number;
     readonly trickCount: number;
+    readonly sumHiddenDoraCount: number;
 }
 
 export type DealerWinLossStat = WinLossStat & {

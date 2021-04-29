@@ -53,6 +53,8 @@ export type ShortenedWinLossStat = {
     readonly ls: number;
     /** sumWinRound */
     readonly wr: number;
+    /** sumAllDoraCount */
+    readonly sd: number;
 }
 
 export type ShortenedRiichiWinLossStat = ShortenedWinLossStat & {
@@ -66,6 +68,8 @@ export type ShortenedRiichiWinLossStat = ShortenedWinLossStat & {
     readonly rf: number;
     /** trickCount */
     readonly rt: number;
+    /** sumHiddenDoraCount */
+    readonly sdh: number;
 }
 
 export type ShortenedDealerWinLossStat = ShortenedWinLossStat & {
