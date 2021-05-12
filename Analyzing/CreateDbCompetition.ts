@@ -13,7 +13,7 @@ type Mutable<T> = {
 export function createDbCompetition(matches: readonly Match[]): Competition
 {
     const players = getAllPlayers();
-    const items: readonly (readonly Mutable<CompetitionResult>[])[] = [...new Array(players.length)].map(() => [...new Array(players.length)].map(() => ({ income: 0, win: 0, loss: 0 })));
+    const items: readonly (readonly Mutable<CompetitionResult>[])[] = [...new Array(players.length)].map(() => [...new Array(players.length)].map(() => ({ income: 0, win: 0, loss: 0, sumFeeding: 0 })));
     
     for (const match of matches)
     {
@@ -41,6 +41,37 @@ export function createDbCompetition(matches: readonly Match[]): Competition
                 {
                     ++items[x.playerIndex][y.playerIndex].loss;
                     ++items[y.playerIndex][x.playerIndex].win;
+                }
+            }
+        }
+
+        for (const game of match.games)
+        {
+            for (const gameResult of game.gameResults)
+            {
+                if (gameResult.resultKind === "win")
+                {
+                    if (gameResult.from != null)
+                    {
+                        const feedingPlayerIndex = results[gameResult.from].playerIndex;
+                        const winPlayerIndex = results[gameResult.player].playerIndex;
+                        if (gameResult.pao != null)
+                        {
+                            const paoPlayerIndex = results[gameResult.pao].playerIndex;
+                            items[feedingPlayerIndex][winPlayerIndex].sumFeeding += gameResult.winScore / 2;
+                            items[paoPlayerIndex][winPlayerIndex].sumFeeding += gameResult.winScore / 2;
+                        }
+                        else
+                        {
+                            items[feedingPlayerIndex][winPlayerIndex].sumFeeding += gameResult.winScore;
+                        }
+                    }
+                    else if (gameResult.pao != null)
+                    {
+                        const paoPlayerIndex = results[gameResult.pao].playerIndex;
+                        const winPlayerIndex = results[gameResult.player].playerIndex;
+                        items[paoPlayerIndex][winPlayerIndex].sumFeeding += gameResult.winScore;
+                    }
                 }
             }
         }

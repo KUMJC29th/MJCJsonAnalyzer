@@ -5,7 +5,8 @@
 export type CompetitionResult = {
     readonly income: number,
     readonly win: number,
-    readonly loss: number
+    readonly loss: number,
+    readonly sumFeeding: number
 };
 
 export type Competition = readonly (readonly (CompetitionResult | null)[])[];
